@@ -1,4 +1,4 @@
-# API para publicar ou visualizar tweets
+# Script Python para visualizar tweets
 # Chave e token de acesso a API do Twitter
 # Disponível em https://developer.twitter.com
 
@@ -44,6 +44,8 @@ Operador 'q'          : Termo a pesquisar
 Operador 'Count'      : Limita a busca a 100 tweets (máximo permitido pela API)
 Geocode               : Localização geográfica mais o range de até n Km
 Geocode de Bacabal(MA): &geocode=-4.242706,-44.785870,1000km
+
+https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets.html
 '''
 
 decodificacao_json = requisicao_on_twitter[1].decode()
