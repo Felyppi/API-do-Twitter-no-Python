@@ -1,0 +1,59 @@
+# API para publicar ou visualizar tweets
+# Chave e token de acesso a API do Twitter
+# Disponível em https://developer.twitter.com
+
+# Autor: Walber Felyppi Santos Sousa
+
+#Bibliotecas
+import oauth2   # Biblioteca de autenticação que permite que aplicativos tenham acesso ilimitado às contas de usuários em serviços HTTP, tal como twitter ou facebook
+import urllib.parse
+import json     # Biblioteca que converte uma requisição/resposta JSON em um objeto do Python
+
+
+# Consumer API Keys do Twitter
+api_key              = 'NIHIL' #Sua chave API
+api_secret_key       = 'NIHIL' #Sua senha API Key
+
+
+# Token do Twitter
+access_token         = 'NIHIL' #Seu Token de acesso
+access_token_secret  = 'NIHIL' #Sua senha do Token de acesso
+
+
+# Utilizando a lib oauth2 para autenticação na plataforma do Twitter
+consumer_api       = oauth2.Consumer (
+    api_key, api_secret_key)           # Key   do Twitter
+
+token_api          = oauth2.Token    (
+    access_token, access_token_secret) # Token do Twitter
+
+conexao_on_twitter = oauth2.Client   (
+    consumer_api, token_api)           # Junta as duas credenciais acima para conexão no oauth2
+
+
+# Insere o termo a se pesquisar dentro dos tweets e realiza a requisição na plataforma Twitter usando a api_key e o token_key
+termo_pesquisado              = input(
+    'Pesquisar Tweet: ')
+termo_pesquisado_decodificado = urllib.parse.quote(
+    termo_pesquisado, safe='') #Permite o uso de caracteres especiais
+requisicao_on_twitter         = conexao_on_twitter.request    (
+    'https://api.twitter.com/1.1/search/tweets.json?q=' + termo_pesquisado_decodificado + '&count=100')
+
+'''
+Operador 'q'          : Termo a pesquisar
+Operador 'Count'      : Limita a busca a 100 tweets (máximo permitido pela API)
+Geocode               : Localização geográfica mais o range de até n Km
+Geocode de Bacabal(MA): &geocode=-4.242706,-44.785870,1000km
+'''
+
+decodificacao_json = requisicao_on_twitter[1].decode()
+objeto_python      = json.loads (decodificacao_json) #converte a resposta de JSON(json é como o XML) para objeto do Python
+tweets             = objeto_python ['statuses']
+
+i = 1
+for tweet in tweets:
+    print ('Tweet ', i, ':')
+    print (tweet['user']['screen_name'])
+    print (tweet['text'])
+    print ('==========================================================================================================')
+    i += 1
